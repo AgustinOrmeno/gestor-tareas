@@ -1,0 +1,17 @@
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\model\Tarea.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\service\AuthService.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\dto\TareaResponse.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\repository\TareaRepository.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\dto\LoginRequest.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\security\JwtUtil.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\security\UserDetailsServiceImpl.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\repository\UsuarioRepository.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\controller\TareaController.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\dto\RegisterRequest.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\dto\TareaRequest.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\model\Usuario.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\security\JwtFilter.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\config\SecurityConfig.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\controller\AuthController.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\GestorTareasApplication.java
+C:\Users\Orme\Desktop\GESTOR DE TAREAS\backend\src\main\java\com\gestortareas\service\TareaService.java
