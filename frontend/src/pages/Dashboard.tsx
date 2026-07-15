@@ -31,6 +31,7 @@ export const Dashboard = () => {
   const [showForm, setShowForm] = useState(false);
   const [editando, setEditando] = useState<Tarea | null>(null);
   const [seleccionada, setSeleccionada] = useState<Tarea | null>(null);
+  const [vistaKanban, setVistaKanban] = useState(false);
   const [historial, setHistorial] = useState<HistorialItem[]>([]);
   const [loadingHistorial, setLoadingHistorial] = useState(false);
   const [error, setError] = useState('');
@@ -188,15 +189,19 @@ export const Dashboard = () => {
                 <button
                   key={c.value}
                   className={`filter-chip ${filtroEstado === c.value ? 'active' : ''}`}
-                  onClick={() => setFiltroEstado(c.value)}
+                  onClick={() => { setFiltroEstado(c.value); setVistaKanban(false); }}
                 >{c.label}</button>
               ))}
-              <select value={orden} onChange={e => setOrden(e.target.value)} className="sort-select" style={{ marginLeft: 'auto' }}>
-                <option value="fechaCreacion_desc">Más recientes</option>
-                <option value="prioridad_desc">Mayor prioridad</option>
-                <option value="fecha_asc">Fecha límite ↑</option>
-                <option value="titulo_asc">Título A–Z</option>
-              </select>
+              <div style={{ marginLeft: 'auto', display: 'flex', gap: '6px', alignItems: 'center' }}>
+                <select value={orden} onChange={e => setOrden(e.target.value)} className="sort-select">
+                  <option value="fechaCreacion_desc">Más recientes</option>
+                  <option value="prioridad_desc">Mayor prioridad</option>
+                  <option value="fecha_asc">Fecha límite ↑</option>
+                  <option value="titulo_asc">Título A–Z</option>
+                </select>
+                <button className={`vista-btn ${!vistaKanban ? 'active' : ''}`} onClick={() => setVistaKanban(false)} title="Vista lista">☰</button>
+                <button className={`vista-btn ${vistaKanban ? 'active' : ''}`} onClick={() => setVistaKanban(true)} title="Vista kanban">⊞</button>
+              </div>
             </div>
 
             {error && <div className="error-msg" style={{ margin: '0 0 8px' }}>{error}</div>}
@@ -208,6 +213,37 @@ export const Dashboard = () => {
                 {busqueda ? <p>Sin resultados para "<strong>{busqueda}</strong>"</p> : (
                   <><p>No hay tareas todavía.</p><button className="btn-primary" onClick={() => setShowForm(true)}>Crear primera tarea</button></>
                 )}
+              </div>
+            ) : vistaKanban ? (
+              <div className="kanban-board">
+                {(['PENDIENTE', 'EN_PROGRESO', 'COMPLETADA'] as Tarea['estado'][]).map(estado => {
+                  const col = tareasFiltradas.filter(t => t.estado === estado);
+                  return (
+                    <div key={estado} className="kanban-col">
+                      <div className={`kanban-col-header kanban-${estado.toLowerCase()}`}>
+                        {ESTADO_LABEL[estado]} <span className="kanban-count">{col.length}</span>
+                      </div>
+                      <div className="kanban-cards">
+                        {col.map(tarea => {
+                          const vencida = isVencida(tarea);
+                          return (
+                            <div key={tarea.id} className={`kanban-card ${vencida ? 'vencida' : ''}`} onClick={() => cargarHistorial(tarea)}>
+                              <div className="kanban-card-title">{tarea.titulo}</div>
+                              {tarea.fechaLimite && <div className={`kanban-card-date ${vencida ? 'fecha-vencida' : ''}`}>📅 {tarea.fechaLimite}</div>}
+                              <div className="kanban-card-footer">
+                                <span className={`badge badge-prioridad ${tarea.prioridad.toLowerCase()}`}>{PRIORIDAD_LABEL[tarea.prioridad]}</span>
+                                <div className="kanban-card-actions" onClick={e => e.stopPropagation()}>
+                                  <button className="btn-icon" onClick={() => setEditando(tarea)}>✏️</button>
+                                  <button className="btn-icon danger" onClick={() => handleEliminar(tarea.id)}>🗑️</button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             ) : (
               <div className="task-list">
@@ -313,6 +349,17 @@ export const Dashboard = () => {
 
       {showForm && <TareaForm titulo="Nueva tarea" onSubmit={handleCrear} onCancel={() => setShowForm(false)} />}
       {editando && <TareaForm titulo="Editar tarea" inicial={editando} onSubmit={handleEditar} onCancel={() => setEditando(null)} />}
+
+      {/* Mobile nav */}
+      <button className="mobile-fab" onClick={() => setShowForm(true)}>+</button>
+      <nav className="mobile-nav">
+        <div className="mobile-nav-items">
+          <button className="mobile-nav-item active"><span className="mobile-nav-icon">📋</span><span className="mobile-nav-label">Tareas</span></button>
+          <button className="mobile-nav-item" onClick={() => navigate('/reportes')}><span className="mobile-nav-icon">📊</span><span className="mobile-nav-label">Reportes</span></button>
+          <button className="mobile-nav-item" onClick={() => navigate('/historial')}><span className="mobile-nav-icon">🕐</span><span className="mobile-nav-label">Historial</span></button>
+          <button className="mobile-nav-item" onClick={() => navigate('/perfil')}><span className="mobile-nav-icon">👤</span><span className="mobile-nav-label">Perfil</span></button>
+        </div>
+      </nav>
     </div>
   );
 };

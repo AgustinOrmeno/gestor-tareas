@@ -3,6 +3,15 @@ import { useNavigate, Link } from 'react-router-dom';
 import { register as registerApi } from '../api/auth';
 import { useAuth } from '../context/AuthContext';
 
+const getPasswordStrength = (pwd: string): { level: number; label: string; color: string } => {
+  if (pwd.length === 0) return { level: 0, label: '', color: '' };
+  if (pwd.length < 6) return { level: 1, label: 'Muy débil', color: '#9b1c1c' };
+  if (pwd.length < 8) return { level: 2, label: 'Débil', color: '#b45309' };
+  if (pwd.length < 10 || !/[A-Z]/.test(pwd) || !/[0-9]/.test(pwd))
+    return { level: 3, label: 'Buena', color: '#1a4fa0' };
+  return { level: 4, label: 'Fuerte', color: '#166534' };
+};
+
 export const Register = () => {
   const [nombre, setNombre] = useState('');
   const [email, setEmail] = useState('');
@@ -11,6 +20,7 @@ export const Register = () => {
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const strength = getPasswordStrength(password);
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -55,6 +65,16 @@ export const Register = () => {
           <div className="form-group">
             <label>Contraseña</label>
             <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Mínimo 6 caracteres" required />
+            {password.length > 0 && (
+              <>
+                <div className="strength-bars">
+                  {[1, 2, 3, 4].map(i => (
+                    <div key={i} className="strength-bar" style={{ background: i <= strength.level ? strength.color : 'var(--border)' }} />
+                  ))}
+                </div>
+                <div className="strength-label" style={{ color: strength.color }}>{strength.label}</div>
+              </>
+            )}
           </div>
           <button type="submit" className="btn-full" disabled={loading}>
             {loading ? 'Creando cuenta...' : 'Crear cuenta'}
