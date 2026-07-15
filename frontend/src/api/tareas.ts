@@ -1,5 +1,5 @@
 import client from './client';
-import type { Tarea, TareaRequest } from '../types';
+import type { Tarea, TareaRequest, HistorialItem, Reporte } from '../types';
 
 export const getTareas = async (estado?: string, prioridad?: string): Promise<Tarea[]> => {
   const params: Record<string, string> = {};
@@ -26,4 +26,19 @@ export const cambiarEstado = async (id: number, estado: string): Promise<Tarea> 
 
 export const eliminarTarea = async (id: number): Promise<void> => {
   await client.delete(`/api/tareas/${id}`);
+};
+
+export const getHistorial = async (id: number): Promise<HistorialItem[]> => {
+  const { data } = await client.get(`/api/tareas/${id}/historial`);
+  return data;
+};
+
+export const getReporte = async (): Promise<Reporte> => {
+  const { data } = await client.get('/api/tareas/reporte');
+  return data;
+};
+
+export const getHistorialCompleto = async (): Promise<HistorialItem[]> => {
+  const { data } = await client.get('/api/tareas/historial-completo');
+  return data;
 };

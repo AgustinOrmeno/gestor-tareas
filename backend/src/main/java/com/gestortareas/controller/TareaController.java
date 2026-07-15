@@ -1,5 +1,6 @@
 package com.gestortareas.controller;
 
+import com.gestortareas.dto.HistorialResponse;
 import com.gestortareas.dto.TareaRequest;
 import com.gestortareas.dto.TareaResponse;
 import com.gestortareas.model.Tarea.Estado;
@@ -51,5 +52,20 @@ public class TareaController {
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         tareaService.eliminar(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/{id}/historial")
+    public ResponseEntity<List<HistorialResponse>> getHistorial(@PathVariable Long id) {
+        return ResponseEntity.ok(tareaService.getHistorial(id));
+    }
+
+    @GetMapping("/historial-completo")
+    public ResponseEntity<List<HistorialResponse>> getHistorialCompleto() {
+        return ResponseEntity.ok(tareaService.getHistorialCompleto());
+    }
+
+    @GetMapping("/reporte")
+    public ResponseEntity<Map<String, Object>> getReporte() {
+        return ResponseEntity.ok(tareaService.getReporte());
     }
 }

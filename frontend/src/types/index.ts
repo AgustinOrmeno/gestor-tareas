@@ -19,3 +19,24 @@ export interface TareaRequest {
 export interface AuthResponse {
   token: string;
 }
+
+export interface HistorialItem {
+  id: number;
+  estadoAnterior: string | null;
+  estadoNuevo: string;
+  usuario: string;
+  fecha: string;
+  tareaTitulo?: string;
+  tareaId?: number;
+}
+
+export interface Reporte {
+  total: number;
+  pendientes: number;
+  enProgreso: number;
+  completadas: number;
+  alta: number;
+  media: number;
+  baja: number;
+  porcentajeCompletado: number;
+}
